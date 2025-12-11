@@ -1,0 +1,2489 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>أبشر - Absher</title>
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --absher-background: #1C1C1E;
+            --absher-card-background: #2C2C2E;
+            --absher-card-border: #3C3C3E;
+            --absher-green: #4CAF50;
+            --absher-light-green: #8BC34A;
+            --absher-mint: #A8E6CF;
+            --absher-purple: #7C4DFF;
+            --absher-orange: #FF9500;
+            --absher-text-primary: #FFFFFF;
+            --absher-text-secondary: #8E8E93;
+            --absher-text-muted: #636366;
+            --font-title: 24px;
+            --font-headline: 18px;
+            --font-body: 16px;
+            --font-caption: 14px;
+            --font-small: 12px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--absher-background);
+            color: var(--absher-text-primary);
+            min-height: 100vh;
+            direction: rtl;
+        }
+
+        .app-container {
+            max-width: 430px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Screen transitions */
+        .screen {
+            display: none;
+            animation: fadeIn 0.35s ease-in-out;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        /* Card styles */
+        .absher-card {
+            background: var(--absher-card-background);
+            border-radius: 12px;
+            border: 1px solid var(--absher-card-border);
+            padding: 16px;
+        }
+        
+        .proactive-alert-card {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.3), var(--absher-card-background));
+            border-radius: 16px;
+            border: 2px solid var(--absher-orange);
+            padding: 16px;
+            box-shadow: 0 4px 8px rgba(255, 149, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .proactive-alert-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 149, 0, 0.4);
+        }
+        
+        /* Button styles */
+        .btn-primary {
+            font-size: var(--font-headline);
+            font-weight: 600;
+            color: var(--absher-background);
+            background: var(--absher-mint);
+            border: none;
+            border-radius: 12px;
+            padding: 16px 24px;
+            width: 100%;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Input styles */
+        input, textarea {
+            font-family: 'Tajawal', sans-serif;
+            font-size: var(--font-body);
+            color: var(--absher-text-primary);
+            background: var(--absher-card-background);
+            border: 1px solid var(--absher-card-border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            width: 100%;
+            direction: rtl;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--absher-mint);
+        }
+        
+        input::placeholder {
+            color: var(--absher-text-secondary);
+        }
+        
+        /* Typography */
+        .text-title { font-size: var(--font-title); font-weight: 700; }
+        .text-headline { font-size: var(--font-headline); font-weight: 600; }
+        .text-body { font-size: var(--font-body); font-weight: 400; }
+        .text-caption { font-size: var(--font-caption); font-weight: 400; }
+        .text-small { font-size: var(--font-small); font-weight: 400; }
+        
+        .text-primary { color: var(--absher-text-primary); }
+        .text-secondary { color: var(--absher-text-secondary); }
+        .text-muted { color: var(--absher-text-muted); }
+        .text-green { color: var(--absher-green); }
+        .text-mint { color: var(--absher-mint); }
+        .text-orange { color: var(--absher-orange); }
+        .text-purple { color: var(--absher-purple); }
+        
+        /* Utility classes */
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
+        .items-end { align-items: flex-end; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-4 { gap: 4px; }
+        .gap-8 { gap: 8px; }
+        .gap-12 { gap: 12px; }
+        .gap-16 { gap: 16px; }
+        .gap-24 { gap: 24px; }
+        .w-full { width: 100%; }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        .mt-8 { margin-top: 8px; }
+        .mt-16 { margin-top: 16px; }
+        .mt-24 { margin-top: 24px; }
+        .mb-8 { margin-bottom: 8px; }
+        .mb-16 { margin-bottom: 16px; }
+        .p-16 { padding: 16px; }
+        .px-16 { padding-left: 16px; padding-right: 16px; }
+        .py-12 { padding-top: 12px; padding-bottom: 12px; }
+        
+        /* Icons using CSS */
+        .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .icon-bell::before { content: "🔔"; }
+        .icon-home::before { content: "🏠"; }
+        .icon-person::before { content: "👤"; }
+        .icon-family::before { content: "👨‍👩‍👧‍👦"; }
+        .icon-workers::before { content: "👷"; }
+        .icon-services::before { content: "📋"; }
+        .icon-more::before { content: "⋯"; }
+        .icon-car::before { content: "🚗"; }
+        .icon-doc::before { content: "📄"; }
+        .icon-plane::before { content: "✈️"; }
+        .icon-id::before { content: "🪪"; }
+        .icon-passport::before { content: "📕"; }
+        .icon-license::before { content: "🚘"; }
+        .icon-check::before { content: "✓"; }
+        .icon-chevron-left::before { content: "‹"; font-size: 24px; }
+        .icon-chevron-right::before { content: "›"; font-size: 24px; }
+        .icon-settings::before { content: "⚙️"; }
+        .icon-chat::before { content: "💬"; }
+        .icon-heart::before { content: "❤️"; }
+        .icon-credit::before { content: "💳"; }
+        .icon-warning::before { content: "⚠️"; }
+        .icon-send::before { content: "➤"; }
+        .icon-mic::before { content: "🎤"; }
+        .icon-camera::before { content: "📷"; }
+
+        /* ============================================
+           LOGIN VIEW STYLES
+           ============================================ */
+        .login-view {
+            min-height: 100vh;
+            padding: 16px;
+        }
+        
+        .login-logos {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            padding-top: 60px;
+            margin-bottom: 32px;
+        }
+        
+        .logo-container {
+            width: 110px;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .absher-logo {
+            width: 100%;
+            height: auto;
+        }
+        
+        .absher-logo-svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .login-title {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-group label {
+            font-size: var(--font-caption);
+            color: var(--absher-text-secondary);
+            text-align: right;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 1px solid var(--absher-card-border);
+            border-radius: 6px;
+            background: var(--absher-card-background);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        
+        .checkbox.checked {
+            background: var(--absher-mint);
+        }
+        
+        .checkbox.checked::after {
+            content: "✓";
+            color: var(--absher-background);
+            font-weight: bold;
+        }
+        
+        .forgot-password {
+            text-align: center;
+            margin-top: 16px;
+        }
+        
+        .forgot-password a {
+            color: var(--absher-mint);
+            text-decoration: none;
+            font-size: var(--font-body);
+        }
+        
+        /* ============================================
+           LOADING VIEW STYLES
+           ============================================ */
+        .loading-view {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        
+        .loading-logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 40px;
+        }
+        
+        .loading-text {
+            color: var(--absher-text-secondary);
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 0 32px;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--absher-card-border);
+            border-top-color: var(--absher-mint);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* ============================================
+           HOME VIEW STYLES
+           ============================================ */
+        .home-view {
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        
+        /* Top Navigation Bar */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+        }
+        
+        .top-nav-icons {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            color: var(--absher-green);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+        
+        .top-nav-logo {
+            height: 40px;
+        }
+        
+        /* User Profile Card */
+        .user-profile-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--absher-green), var(--absher-light-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 1.5px solid rgba(76, 175, 80, 0.5);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+        
+        .user-info {
+            flex: 1;
+            text-align: right;
+        }
+        
+        .user-name {
+            font-size: var(--font-headline);
+            font-weight: 600;
+            color: var(--absher-text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .user-id {
+            font-size: var(--font-caption);
+            color: var(--absher-text-secondary);
+        }
+        
+        /* Proactive Alert */
+        .alert-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .alert-title {
+            font-size: var(--font-headline);
+            font-weight: 600;
+            color: var(--absher-orange);
+        }
+        
+        .alert-icon {
+            font-size: 20px;
+            color: var(--absher-orange);
+        }
+        
+        .alert-message {
+            font-size: var(--font-body);
+            color: var(--absher-text-primary);
+            text-align: right;
+            margin-bottom: 12px;
+        }
+        
+        .alert-action {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .alert-action-text {
+            font-size: var(--font-body);
+            font-weight: 600;
+            color: var(--absher-orange);
+        }
+        
+        /* Payment Progress Card */
+        .payment-progress-card {
+            display: none;
+        }
+        
+        .payment-progress-card.visible {
+            display: block;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 16px;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: var(--absher-card-border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--absher-orange);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .progress-stat {
+            text-align: right;
+        }
+
+        /* Digital Documents Section */
+        .documents-section {
+            margin-top: 24px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .section-title {
+            font-size: var(--font-headline);
+            font-weight: 600;
+            color: var(--absher-text-primary);
+        }
+        
+        .section-link {
+            font-size: var(--font-caption);
+            color: var(--absher-green);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        
+        .documents-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+        
+        .documents-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .document-card {
+            min-width: 100px;
+            height: 120px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        
+        .document-icon {
+            font-size: 32px;
+        }
+        
+        .document-title {
+            font-size: var(--font-body);
+            color: var(--absher-text-primary);
+            text-align: right;
+        }
+        
+        .document-status {
+            font-size: var(--font-small);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .document-status.expiring {
+            color: var(--absher-orange);
+            background: rgba(255, 149, 0, 0.15);
+        }
+        
+        .document-status.expired {
+            color: #FF3B30;
+            background: rgba(255, 59, 48, 0.2);
+        }
+        
+        .documents-info {
+            font-size: var(--font-small);
+            color: var(--absher-text-secondary);
+            text-align: right;
+            margin-top: 8px;
+        }
+        
+        /* Quick Access Section */
+        .quick-access-section {
+            margin-top: 24px;
+        }
+        
+        .vehicles-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+        
+        .vehicles-icon {
+            font-size: 28px;
+            color: var(--absher-green);
+        }
+        
+        .vehicles-info {
+            flex: 1;
+            text-align: right;
+        }
+        
+        .vehicles-title {
+            font-size: var(--font-body);
+            color: var(--absher-text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .vehicles-subtitle {
+            font-size: var(--font-small);
+            color: var(--absher-text-secondary);
+        }
+        
+        .service-cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        
+        .service-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            height: 100px;
+            cursor: pointer;
+        }
+        
+        .service-card-icon {
+            font-size: 32px;
+            color: var(--absher-green);
+        }
+        
+        .service-card-title {
+            font-size: var(--font-body);
+            color: var(--absher-text-primary);
+            text-align: center;
+        }
+        
+        /* Bottom Tab Bar */
+        .bottom-tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            height: 83px;
+            background: var(--absher-card-background);
+            border-top: 1px solid var(--absher-card-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            z-index: 100;
+        }
+        
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+        
+        .tab-icon {
+            font-size: 24px;
+            color: var(--absher-text-secondary);
+        }
+        
+        .tab-item.active .tab-icon {
+            color: var(--absher-green);
+        }
+        
+        .tab-label {
+            font-size: var(--font-small);
+            color: var(--absher-text-secondary);
+        }
+        
+        .tab-item.active .tab-label {
+            color: var(--absher-green);
+        }
+        
+        /* ============================================
+           REVIEW VIEW STYLES
+           ============================================ */
+        .review-view {
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--absher-card-background);
+        }
+        
+        .nav-title {
+            font-size: var(--font-headline);
+            font-weight: 600;
+            color: var(--absher-text-primary);
+        }
+        
+        .nav-back {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--absher-green);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+        
+        .review-content {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        /* License Header Card */
+        .license-header-card {
+            overflow: hidden;
+        }
+        
+        .license-banner {
+            height: 76px;
+            background: linear-gradient(135deg, var(--absher-green), var(--absher-light-green));
+            border-radius: 18px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        
+        .license-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .license-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--absher-green), var(--absher-light-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            border: 1px solid var(--absher-card-border);
+        }
+        
+        .license-details {
+            flex: 1;
+            text-align: right;
+        }
+        
+        .license-name {
+            font-size: var(--font-body);
+            color: var(--absher-text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .license-id {
+            font-size: var(--font-caption);
+            color: var(--absher-text-secondary);
+        }
+        
+        .license-chips {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        
+        .chip {
+            font-size: var(--font-caption);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        
+        .chip-green {
+            color: var(--absher-green);
+            background: rgba(76, 175, 80, 0.15);
+        }
+        
+        .chip-gray {
+            color: var(--absher-text-secondary);
+            background: rgba(60, 60, 62, 0.3);
+        }
+        
+        /* Status Cards */
+        .status-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .status-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .status-icon {
+            font-size: 24px;
+        }
+        
+        .status-content {
+            flex: 1;
+            text-align: right;
+        }
+        
+        .status-title {
+            font-size: var(--font-body);
+            color: var(--absher-text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .status-subtitle {
+            font-size: var(--font-caption);
+            color: var(--absher-text-secondary);
+        }
+        
+        .status-badge {
+            font-size: var(--font-caption);
+            padding: 4px 8px;
+            border-radius: 8px;
+            position: absolute;
+            top: 16px;
+            left: 16px;
+        }
+        
+        .status-badge-green {
+            color: var(--absher-light-green);
+            background: rgba(139, 195, 74, 0.15);
+        }
+        
+        .verification-details {
+            font-size: var(--font-caption);
+            color: var(--absher-text-secondary);
+            text-align: right;
+            margin-top: 8px;
+        }
+
+        /* Fee Breakdown */
+        .fee-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .fee-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .fee-label {
+            font-size: var(--font-body);
+            color: var(--absher-text-secondary);
+        }
+        
+        .fee-value {
+            font-size: var(--font-body);
+            color: var(--absher-text-primary);
+        }
+        
+        .fee-value.free {
+            color: var(--absher-green);
+        }
+        
+        .fee-value.late {
+            color: var(--absher-orange);
+        }
+        
+        .fee-divider {
+            height: 1px;
+            background: rgba(142, 142, 147, 0.3);
+        }
+        
+        .fee-total {
+            font-size: var(--font-headline);
+            font-weight: 600;
+            color: var(--absher-mint);
+        }
+        
+        /* Split Payment Section */
+        .split-payment-section {
+            display: none;
+        }
+        
+        .split-payment-section.visible {
+            display: block;
+        }
+        
+        .slider-container {
+            margin: 16px 0;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--absher-card-border);
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--absher-orange);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: var(--absher-orange);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+        
+        /* Approve Button */
+        .approve-button-container {
+            position: fixed;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 398px;
+            z-index: 50;
+        }
+        
+        .btn-booked {
+            background: var(--absher-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        /* ============================================
+           CONFIRMATION VIEW STYLES
+           ============================================ */
+        .confirmation-view {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .confirmation-icon {
+            font-size: 100px;
+            color: var(--absher-green);
+            margin-bottom: 32px;
+        }
+        
+        .confirmation-title {
+            font-size: var(--font-title);
+            color: var(--absher-text-primary);
+            margin-bottom: 32px;
+        }
+        
+        .time-savings {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--absher-mint);
+            margin-bottom: 16px;
+        }
+        
+        .time-savings-subtitle {
+            font-size: var(--font-body);
+            color: var(--absher-text-secondary);
+            margin-bottom: 8px;
+            padding: 0 24px;
+        }
+        
+        .email-note {
+            font-size: var(--font-caption);
+            color: var(--absher-text-muted);
+            margin-top: 8px;
+        }
+        
+        .confirmation-button {
+            margin-top: 60px;
+            width: 100%;
+        }
+        
+        /* ============================================
+           DEPENDENTS VIEW STYLES
+           ============================================ */
+        .dependents-view {
+            min-height: 100vh;
+        }
+        
+        .dependents-content {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .dependents-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .dependents-header-icon {
+            font-size: 32px;
+            color: var(--absher-mint);
+        }
+        
+        .dependents-header-info {
+            flex: 1;
+            text-align: right;
+        }
+        
+        .dependent-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .dependent-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .dependent-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(124, 77, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--absher-purple);
+        }
+        
+        .dependent-info {
+            flex: 1;
+            text-align: right;
+        }
+        
+        .dependent-name {
+            font-size: var(--font-headline);
+            font-weight: 600;
+            color: var(--absher-text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .dependent-relationship {
+            font-size: var(--font-caption);
+            color: var(--absher-text-secondary);
+        }
+        
+        .dependent-divider {
+            height: 1px;
+            background: rgba(142, 142, 147, 0.3);
+        }
+        
+        .dependent-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .dependent-label {
+            font-size: var(--font-caption);
+            color: var(--absher-text-secondary);
+        }
+        
+        .dependent-value {
+            font-size: var(--font-body);
+            color: var(--absher-text-primary);
+        }
+        
+        .days-remaining-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+        
+        .days-remaining-box.urgent {
+            background: rgba(255, 59, 48, 0.15);
+        }
+        
+        .days-remaining-box.warning {
+            background: rgba(255, 149, 0, 0.15);
+        }
+        
+        .days-remaining-box.normal {
+            background: rgba(168, 230, 207, 0.15);
+        }
+        
+        .days-number {
+            font-size: var(--font-title);
+            font-weight: 700;
+        }
+        
+        .days-number.urgent {
+            color: #FF3B30;
+        }
+        
+        .days-number.warning {
+            color: var(--absher-orange);
+        }
+        
+        .days-number.normal {
+            color: var(--absher-mint);
+        }
+        
+        /* ============================================
+           CHAT VIEW STYLES
+           ============================================ */
+        .chat-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            display: none;
+        }
+        
+        .chat-overlay.active {
+            display: block;
+        }
+        
+        .chat-view {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            height: 100%;
+            background: white;
+            z-index: 201;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .chat-view.active {
+            display: flex;
+        }
+        
+        .chat-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: white;
+        }
+        
+        .chat-close-btn {
+            font-size: 20px;
+            color: #8E8E93;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+        
+        .chat-user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #4285F4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .chat-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            background: white;
+        }
+        
+        .chat-greeting {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+        
+        .chat-greeting-text {
+            font-size: 36px;
+            font-weight: 500;
+            background: linear-gradient(90deg, var(--absher-green), var(--absher-light-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+        
+        .chat-greeting-subtitle {
+            font-size: 16px;
+            color: #8E8E93;
+        }
+        
+        .chat-suggestions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+        }
+        
+        .suggestion-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #F5F5F5;
+            border-radius: 20px;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        
+        .suggestion-chip:hover {
+            background: #EBEBEB;
+        }
+        
+        .suggestion-icon {
+            font-size: 14px;
+            color: var(--absher-orange);
+        }
+        
+        .suggestion-text {
+            font-size: 14px;
+            color: #1C1C1E;
+            text-align: right;
+        }
+
+        /* Chat Messages */
+        .chat-messages {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .chat-messages.active {
+            display: flex;
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 16px;
+        }
+        
+        .message.user {
+            align-self: flex-end;
+            background: var(--absher-green);
+            color: white;
+            text-align: right;
+        }
+        
+        .message.bot {
+            align-self: flex-start;
+            background: #F5F5F5;
+            color: #1C1C1E;
+            text-align: right;
+        }
+        
+        .message-content {
+            font-size: 15px;
+            line-height: 1.4;
+        }
+        
+        .deep-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: rgba(168, 230, 207, 0.15);
+            border-radius: 12px;
+            color: var(--absher-mint);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        
+        .deep-link-btn:hover {
+            background: rgba(168, 230, 207, 0.25);
+        }
+        
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            padding: 12px 16px;
+            background: #F5F5F5;
+            border-radius: 16px;
+        }
+        
+        .typing-indicator.active {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #8E8E93;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-6px); }
+        }
+        
+        .typing-text {
+            font-size: 14px;
+            color: #8E8E93;
+        }
+        
+        /* Chat Input */
+        .chat-input-container {
+            padding: 8px 16px;
+            background: white;
+        }
+        
+        .chat-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .chat-input-field {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 16px;
+            background: #F1F3F4;
+            border-radius: 28px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            color: #1C1C1E;
+            outline: none;
+        }
+        
+        .chat-input::placeholder {
+            color: #8E8E93;
+        }
+        
+        .chat-input-btn {
+            font-size: 18px;
+            color: #8E8E93;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+        
+        .chat-input-btn.send {
+            font-size: 24px;
+            color: var(--absher-green);
+            display: none;
+        }
+        
+        .chat-input-btn.send.active {
+            display: block;
+        }
+        
+        .chat-settings-btn {
+            width: 44px;
+            height: 44px;
+            background: #F1F3F4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #8E8E93;
+            cursor: pointer;
+            border: none;
+        }
+        
+        /* Chat Branding */
+        .chat-branding {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 16px;
+            background: white;
+        }
+        
+        .chat-branding-icon {
+            font-size: 14px;
+            color: var(--absher-green);
+        }
+        
+        .chat-branding-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #8E8E93;
+        }
+        
+        /* ============================================
+           RESPONSIVE STYLES
+           ============================================ */
+        @media (max-width: 430px) {
+            .app-container {
+                max-width: 100%;
+            }
+            
+            .bottom-tab-bar {
+                max-width: 100%;
+            }
+            
+            .approve-button-container {
+                max-width: calc(100% - 32px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- ============================================
+             LOGIN VIEW
+             ============================================ -->
+        <div id="login-view" class="screen login-view active">
+            <div class="login-logos">
+                <div class="logo-container">
+                    <svg class="absher-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" fill="#4CAF50"/>
+                        <text x="50" y="60" text-anchor="middle" fill="white" font-size="24" font-weight="bold" font-family="Tajawal">أبشر</text>
+                    </svg>
+                </div>
+                <div class="logo-container">
+                    <svg class="absher-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" fill="#1C1C1E" stroke="#4CAF50" stroke-width="2"/>
+                        <text x="50" y="55" text-anchor="middle" fill="#4CAF50" font-size="12" font-weight="bold" font-family="Tajawal">وزارة الداخلية</text>
+                    </svg>
+                </div>
+            </div>
+            
+            <h1 class="text-title text-primary text-center login-title">تسجيل الدخول إلى أبشر</h1>
+            
+            <div class="login-form">
+                <div class="form-group">
+                    <label>اسم المستخدم أو رقم الهوية</label>
+                    <input type="text" id="username" placeholder="">
+                </div>
+                
+                <div class="form-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" id="password" placeholder="أدخل كلمة المرور">
+                </div>
+                
+                <div class="checkbox-group">
+                    <span class="text-body text-primary">عدم تسجيل الخروج</span>
+                    <div id="stay-logged-in" class="checkbox" onclick="toggleCheckbox(this)"></div>
+                </div>
+                
+                <button class="btn-primary mt-24" onclick="login()">تسجيل الدخول</button>
+                
+                <div class="forgot-password">
+                    <a href="#">نسيت كلمة المرور</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ============================================
+             LOADING VIEW
+             ============================================ -->
+        <div id="loading-view" class="screen loading-view">
+            <div class="loading-logo">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="#4CAF50"/>
+                    <text x="50" y="60" text-anchor="middle" fill="white" font-size="24" font-weight="bold" font-family="Tajawal">أبشر</text>
+                </svg>
+            </div>
+            <p class="text-body loading-text">خدمات متوفرة على مدار الساعة طوال الأسبوع</p>
+            <div class="spinner"></div>
+            <p class="text-body text-secondary mt-16">جار التحميل...</p>
+        </div>
+
+        <!-- ============================================
+             HOME VIEW
+             ============================================ -->
+        <div id="home-view" class="screen home-view">
+            <!-- Top Navigation Bar -->
+            <div class="top-nav">
+                <div class="top-nav-icons">
+                    <button class="nav-icon" onclick="openChat()">🔔</button>
+                    <button class="nav-icon">⚙️</button>
+                    <button class="nav-icon" onclick="openChat()">💬</button>
+                </div>
+                <div class="top-nav-logo">
+                    <svg width="80" height="40" viewBox="0 0 80 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <text x="40" y="28" text-anchor="middle" fill="#4CAF50" font-size="20" font-weight="bold" font-family="Tajawal">أبشر</text>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="px-16">
+                <!-- User Profile Card -->
+                <div class="absher-card user-profile-card mb-16">
+                    <span class="icon-chevron-left text-secondary"></span>
+                    <div class="user-info">
+                        <div class="user-name">إلياس محمد ناصر البدوي الغامدي</div>
+                        <div class="user-id">رقم الهوية: ****</div>
+                    </div>
+                    <div class="user-avatar">👤</div>
+                </div>
+                
+                <!-- Proactive Alert Card -->
+                <div class="proactive-alert-card mb-16" onclick="navigateToReview('drivingLicenseRenewal')">
+                    <div class="alert-header">
+                        <span class="alert-title">تنبيه استباقي</span>
+                        <span class="alert-icon">🔔</span>
+                    </div>
+                    <p class="alert-message">رخصة قيادتك على وشك الانتهاء خلال 180 يومًا</p>
+                    <div class="alert-action">
+                        <span class="icon-chevron-left text-orange"></span>
+                        <span class="alert-action-text">اضغط للموافقة والدفع الآن</span>
+                    </div>
+                </div>
+                
+                <!-- Payment Progress Card -->
+                <div id="payment-progress-card" class="absher-card payment-progress-card mb-16">
+                    <div class="progress-header">
+                        <div class="text-right">
+                            <div class="text-headline text-primary">تقدم الدفعات</div>
+                            <div class="text-caption text-secondary">تابع ما تم دفعه والمتبقي بسهولة.</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-stats">
+                        <div class="progress-stat">
+                            <div class="text-body text-mint"><span id="paid-percentage">0٪</span> مدفوع</div>
+                            <div class="text-caption text-secondary"><span id="paid-amount">0</span> ريال</div>
+                        </div>
+                        <div class="progress-stat">
+                            <div class="text-body text-orange"><span id="remaining-percentage">100٪</span> متبقٍ</div>
+                            <div class="text-caption text-secondary"><span id="remaining-amount">2,700</span> ريال</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Digital Documents Section - matches DigitalDocument.mockDocuments -->
+                <div class="documents-section">
+                    <div class="section-header">
+                        <button class="section-link">عرض الكل</button>
+                        <span class="section-title">وثائقي الرقمية</span>
+                    </div>
+                    <div class="documents-scroll">
+                        <!-- National ID - Valid (green) - DigitalDocument.mockDocuments[0] -->
+                        <div class="absher-card document-card" onclick="navigateToReview('nationalIdRenewal')">
+                            <span class="document-icon" style="color: #4CAF50;">🪪</span>
+                            <span class="document-title">هوية مواطن</span>
+                            <!-- No status badge for .valid documents per DigitalDocumentsSection.swift -->
+                        </div>
+                        <!-- Passport - Valid (purple) - DigitalDocument.mockDocuments[1] -->
+                        <div class="absher-card document-card" onclick="navigateToReview('passportRenewal')">
+                            <span class="document-icon" style="color: #7C4DFF;">📕</span>
+                            <span class="document-title">جواز السفر</span>
+                            <!-- No status badge for .valid documents -->
+                        </div>
+                        <!-- License - Expiring Soon (red) - DigitalDocument.mockDocuments[2] with daysRemaining: 45 -->
+                        <div class="absher-card document-card" onclick="navigateToReview('drivingLicenseRenewal')">
+                            <span class="document-icon" style="color: #FF3B30;">🚘</span>
+                            <span class="document-title">رخصة</span>
+                            <!-- Status shown for .expiringSoon per DigitalDocumentsSection.swift lines 63-72 -->
+                            <span class="document-status expiring">متبقي 45 يومًا</span>
+                        </div>
+                    </div>
+                    <p class="documents-info">يمكنك عرض جميع وثائقك الرقمية</p>
+                </div>
+                
+                <!-- Quick Access Section -->
+                <div class="quick-access-section">
+                    <div class="section-header">
+                        <span class="section-title">الوصول السريع</span>
+                    </div>
+                    <div class="absher-card vehicles-card mb-16">
+                        <span class="icon-chevron-left text-secondary"></span>
+                        <div class="vehicles-info">
+                            <div class="vehicles-title">مركباتي</div>
+                            <div class="vehicles-subtitle">عرض التفاصيل، تجديد الوثائق والمزيد</div>
+                        </div>
+                        <span class="vehicles-icon">🚗</span>
+                    </div>
+                    <div class="service-cards-grid">
+                        <div class="absher-card service-card">
+                            <span class="service-card-icon">📄</span>
+                            <span class="service-card-title">خدمات التوثيق</span>
+                        </div>
+                        <div class="absher-card service-card">
+                            <span class="service-card-icon">✈️</span>
+                            <span class="service-card-title">أبشر سفر</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Tab Bar -->
+            <div class="bottom-tab-bar">
+                <button class="tab-item">
+                    <span class="tab-icon">⋯</span>
+                    <span class="tab-label">خدمات أخرى</span>
+                </button>
+                <button class="tab-item">
+                    <span class="tab-icon">👷</span>
+                    <span class="tab-label">عمالي</span>
+                </button>
+                <button class="tab-item" onclick="navigateToDependents()">
+                    <span class="tab-icon">👨‍👩‍👧‍👦</span>
+                    <span class="tab-label">عائلتي</span>
+                </button>
+                <button class="tab-item">
+                    <span class="tab-icon">📋</span>
+                    <span class="tab-label">خدماتي</span>
+                </button>
+                <button class="tab-item active">
+                    <span class="tab-icon">🏠</span>
+                    <span class="tab-label">الرئيسية</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ============================================
+             REVIEW VIEW
+             ============================================ -->
+        <div id="review-view" class="screen review-view">
+            <div class="nav-bar">
+                <button class="nav-back" onclick="navigateToHome()">›</button>
+                <span id="review-title" class="nav-title">تجديد رخصة القيادة</span>
+                <div style="width: 40px;"></div>
+            </div>
+            
+            <div class="review-content">
+                <!-- License Header Card -->
+                <div class="absher-card license-header-card">
+                    <div class="license-banner">🚘</div>
+                    <div class="license-info">
+                        <div class="license-details">
+                            <div id="license-service-title" class="text-headline text-primary mb-8">تجديد رخصة القيادة</div>
+                            <div class="license-name">إلياس محمد ناصر البدوي الغامدي</div>
+                            <div class="license-id">١١٢٩٣٤٥١٩٣</div>
+                        </div>
+                        <div class="license-avatar">👤</div>
+                    </div>
+                    <div class="license-chips">
+                        <span class="chip chip-green">Driving License</span>
+                        <span class="chip chip-gray">SA</span>
+                    </div>
+                </div>
+                
+                <!-- Beneficiary Status -->
+                <div class="absher-card status-card">
+                    <div class="status-header">
+                        <div class="status-content">
+                            <div id="beneficiary-status" class="status-title">يوجد مخالفات مرورية</div>
+                            <div class="status-subtitle">حالة المستفيد</div>
+                        </div>
+                        <span class="status-icon" style="color: var(--absher-orange);">⚠️</span>
+                    </div>
+                </div>
+                
+                <!-- Fee Breakdown -->
+                <div class="absher-card">
+                    <div class="text-headline text-primary mb-16">تفاصيل الرسوم</div>
+                    <div class="fee-breakdown">
+                        <div class="fee-row">
+                            <span id="base-fee-value" class="fee-value">٢٬٧٠٠ ريال</span>
+                            <span id="base-fee-label" class="fee-label">تجديد رخصة القيادة</span>
+                        </div>
+                        <div id="late-fee-row" class="fee-row" style="display: none;">
+                            <span id="late-fee-value" class="fee-value late">١٠٠ ريال</span>
+                            <span class="fee-label">رسوم تأخير</span>
+                        </div>
+                        <div class="fee-divider"></div>
+                        <div class="fee-row">
+                            <span id="total-fee" class="fee-total">٢٬٧٠٠ ريال</span>
+                            <span class="fee-label text-primary">المجموع</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fees Section -->
+                <div class="absher-card status-card">
+                    <div class="status-header">
+                        <div class="status-content">
+                            <div id="fees-display" class="text-headline text-primary">٢٬٧٠٠ ريال</div>
+                            <div id="payment-method" class="text-caption text-secondary">جاهز للدفع عبر سداد</div>
+                        </div>
+                        <span class="status-icon" style="color: var(--absher-mint);">💳</span>
+                    </div>
+                    <div class="status-subtitle">الرسوم</div>
+                </div>
+                
+                <!-- Split Payment Section -->
+                <div id="split-payment-section" class="absher-card split-payment-section visible">
+                    <div class="text-headline text-primary mb-8">قسّم دفعتك كما يناسبك</div>
+                    <div class="text-caption text-secondary mb-16">اختر مبلغًا بين ٠ ريال والمتبقي لديك من الرسوم.</div>
+                    
+                    <div class="text-right mb-8">
+                        <div class="text-caption text-secondary">المبلغ المختار</div>
+                        <div class="text-headline text-mint"><span id="selected-amount">٢٬٧٠٠</span> ريال (<span id="selected-percentage">100٪</span>)</div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <input type="range" id="payment-slider" class="slider" min="0" max="2700" value="2700" step="10" oninput="updatePaymentSlider(this.value)">
+                    </div>
+                    
+                    <div class="slider-labels">
+                        <span class="text-caption text-secondary">٠ ريال</span>
+                        <span class="text-caption text-secondary">المتبقي <span id="slider-remaining">٢٬٧٠٠</span> ريال</span>
+                    </div>
+                </div>
+                
+                <!-- Requirements Section -->
+                <div class="absher-card status-card" style="position: relative;">
+                    <span class="status-badge status-badge-green">تم التحقق</span>
+                    <div class="status-header">
+                        <div class="status-content">
+                            <div id="requirements-status" class="status-title">جميع المتطلبات جاهزة وموثقة</div>
+                            <div class="status-subtitle">تمت مزامنتها آليًا من توكلنا</div>
+                        </div>
+                        <span class="status-icon" style="color: var(--absher-light-green);">📄</span>
+                    </div>
+                    <div class="verification-details">
+                        تمت مزامنة الوثائق من توكلنا دون الحاجة لأي إدخال يدوي.<br>
+                        المصدر: توكلنا • <span id="requirements-date"></span><br>
+                        المرجع: DOC-<span id="requirements-ref"></span>
+                    </div>
+                </div>
+                
+                <!-- Medical Check Section -->
+                <div class="absher-card status-card" style="position: relative;">
+                    <span class="status-badge status-badge-green">تم التحقق</span>
+                    <div class="status-header">
+                        <div class="status-content">
+                            <div id="medical-status" class="status-title">الفحص الطبي تم التحقق منه</div>
+                            <div class="status-subtitle">تمت مزامنتها آليًا من توكلنا</div>
+                        </div>
+                        <span class="status-icon" style="color: var(--absher-green);">❤️</span>
+                    </div>
+                    <div class="verification-details">
+                        تم استلام النتيجة الرقمية من العيادة المعتمدة عبر توكلنا.<br>
+                        المصدر: توكلنا • <span id="medical-date"></span><br>
+                        المرجع: MED-<span id="medical-ref"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Approve Button -->
+            <div class="approve-button-container">
+                <button id="approve-btn" class="btn-primary" onclick="approveService()">
+                    دفع <span id="approve-amount">٢٬٧٠٠</span> ريال الآن
+                </button>
+            </div>
+        </div>
+
+        <!-- ============================================
+             CONFIRMATION VIEW
+             ============================================ -->
+        <div id="confirmation-view" class="screen confirmation-view">
+            <div class="confirmation-icon">✅</div>
+            <h1 class="confirmation-title">✅ تم تجديد رخصتك بنجاح</h1>
+            
+            <div class="time-savings">لقد وفرت <span id="time-saved">25</span> دقيقة</div>
+            <p class="time-savings-subtitle">من البحث وإدخال البيانات والتنقل بين الخدمات</p>
+            <p class="email-note">التفاصيل في بريدك</p>
+            
+            <div class="confirmation-button">
+                <button class="btn-primary" onclick="resetDemo()">العودة للرئيسية</button>
+            </div>
+        </div>
+        
+        <!-- ============================================
+             DEPENDENTS VIEW
+             ============================================ -->
+        <div id="dependents-view" class="screen dependents-view">
+            <div class="nav-bar">
+                <button class="nav-back" onclick="navigateToHome()">›</button>
+                <span class="nav-title">التابعين</span>
+                <div style="width: 40px;"></div>
+            </div>
+            
+            <div class="dependents-content">
+                <!-- Header -->
+                <div class="absher-card">
+                    <div class="dependents-header">
+                        <div class="dependents-header-info">
+                            <div class="text-title text-primary">إدارة التابعين</div>
+                            <div class="text-caption text-secondary">متابعة خدمات أفراد العائلة</div>
+                        </div>
+                        <span class="dependents-header-icon">👨‍👩‍👧‍👦</span>
+                    </div>
+                </div>
+                
+                <!-- Dependent 1: حسام -->
+                <div class="absher-card dependent-card">
+                    <div class="dependent-header">
+                        <div class="dependent-info">
+                            <div class="dependent-name">حسام</div>
+                            <div class="dependent-relationship">ولدك</div>
+                        </div>
+                        <div class="dependent-avatar">👤</div>
+                    </div>
+                    <div class="dependent-divider"></div>
+                    <div class="dependent-row">
+                        <span class="dependent-value">اصدار رخصة</span>
+                        <span class="dependent-label">نوع الخدمة</span>
+                    </div>
+                    <div class="days-remaining-box normal">
+                        <div>
+                            <span class="days-number normal">180</span>
+                            <span class="text-body" style="color: var(--absher-mint);">يوم</span>
+                        </div>
+                        <span class="dependent-label">الأيام المتبقية</span>
+                    </div>
+                </div>
+                
+                <!-- Dependent 2: سارة -->
+                <div class="absher-card dependent-card">
+                    <div class="dependent-header">
+                        <div class="dependent-info">
+                            <div class="dependent-name">سارة</div>
+                            <div class="dependent-relationship">ابنتك</div>
+                        </div>
+                        <div class="dependent-avatar">👤</div>
+                    </div>
+                    <div class="dependent-divider"></div>
+                    <div class="dependent-row">
+                        <span class="dependent-value">تجديد هوية</span>
+                        <span class="dependent-label">نوع الخدمة</span>
+                    </div>
+                    <div class="days-remaining-box warning">
+                        <div>
+                            <span class="days-number warning">27</span>
+                            <span class="text-body" style="color: var(--absher-orange);">يوم</span>
+                        </div>
+                        <span class="dependent-label">الأيام المتبقية</span>
+                    </div>
+                </div>
+                
+                <!-- Dependent 3: محمد (urgent) -->
+                <div class="absher-card dependent-card">
+                    <div class="dependent-header">
+                        <div class="dependent-info">
+                            <div class="dependent-name">محمد</div>
+                            <div class="dependent-relationship">ابنك</div>
+                        </div>
+                        <div class="dependent-avatar">👤</div>
+                    </div>
+                    <div class="dependent-divider"></div>
+                    <div class="dependent-row">
+                        <span class="dependent-value">تجديد هوية</span>
+                        <span class="dependent-label">نوع الخدمة</span>
+                    </div>
+                    <div class="days-remaining-box urgent">
+                        <div>
+                            <span class="days-number urgent">5</span>
+                            <span class="text-body" style="color: #FF3B30;">يوم</span>
+                        </div>
+                        <span class="dependent-label">الأيام المتبقية</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ============================================
+             CHAT VIEW (Overlay)
+             ============================================ -->
+        <div id="chat-overlay" class="chat-overlay" onclick="closeChat()"></div>
+        <div id="chat-view" class="chat-view">
+            <div class="chat-top-bar">
+                <button class="chat-close-btn" onclick="closeChat()">📋</button>
+                <div class="chat-user-avatar">إ</div>
+            </div>
+            
+            <div class="chat-content">
+                <!-- Greeting (shown when no messages) -->
+                <div id="chat-greeting" class="chat-greeting">
+                    <div class="chat-greeting-text">مرحبا إلياس</div>
+                    <div class="chat-greeting-subtitle">كيف أقدر اساعدك؟</div>
+                </div>
+                
+                <!-- Suggestion Chips -->
+                <div id="chat-suggestions" class="chat-suggestions">
+                    <button class="suggestion-chip" onclick="handleSuggestionTap('proactive')">
+                        <span class="suggestion-icon">🔔</span>
+                        <span class="suggestion-text">عندك إشعار من التنبيه الاستباقي: تنبيه استباقي</span>
+                    </button>
+                </div>
+                
+                <!-- Messages Container -->
+                <div id="chat-messages" class="chat-messages"></div>
+                
+                <!-- Typing Indicator -->
+                <div id="typing-indicator" class="typing-indicator">
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                    <span class="typing-text">جاري الكتابة...</span>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <div class="chat-input-field">
+                        <input type="text" id="chat-input" class="chat-input" placeholder="اسأل أبشر" onkeypress="handleChatKeypress(event)" oninput="toggleSendButton()">
+                        <button id="send-btn" class="chat-input-btn send" onclick="sendChatMessage()">➤</button>
+                        <button class="chat-input-btn mic-btn">🎤</button>
+                        <button class="chat-input-btn camera-btn">📷</button>
+                    </div>
+                    <button class="chat-settings-btn">☰</button>
+                </div>
+            </div>
+            
+            <div class="chat-branding">
+                <span class="chat-branding-icon">✨</span>
+                <span class="chat-branding-text">أبشر</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // APP STATE
+        // ============================================
+        const AppState = {
+            currentScreen: 'login',
+            totalFeeAmount: 2700,
+            paidAmount: 0,
+            selectedPaymentAmount: 2700,
+            selectedServiceType: 'drivingLicenseRenewal',
+            chatMessages: [],
+            isProcessing: false
+        };
+        
+        // Service Details Configuration
+        const ServiceDetails = {
+            drivingLicenseRenewal: {
+                serviceTitle: 'تجديد رخصة القيادة',
+                beneficiaryStatus: 'يوجد مخالفات مرورية',
+                fees: '٢٬٧٠٠ ريال',
+                paymentMethod: 'جاهز للدفع عبر سداد',
+                requirementsStatus: 'جميع المتطلبات جاهزة وموثقة',
+                medicalCheckStatus: 'الفحص الطبي تم التحقق منه',
+                timeSavings: 25,
+                feeAmount: 2700,
+                baseFee: 2700,
+                lateFee: 0,
+                isLate: false,
+                isFree: false
+            },
+            nationalIdRenewal: {
+                serviceTitle: 'تجديد الهوية الوطنية',
+                beneficiaryStatus: 'لا توجد مخالفات',
+                fees: 'مجاني',
+                paymentMethod: 'لا يوجد رسوم',
+                requirementsStatus: 'جميع المتطلبات جاهزة وموثقة',
+                medicalCheckStatus: 'غير مطلوب',
+                timeSavings: 15,
+                feeAmount: 0,
+                baseFee: 0,
+                lateFee: 0,
+                isLate: false,
+                isFree: true
+            },
+            passportRenewal: {
+                serviceTitle: 'تجديد جواز السفر',
+                beneficiaryStatus: 'لا توجد مخالفات',
+                fees: '٣٠٠ ريال',
+                paymentMethod: 'جاهز للدفع عبر سداد',
+                requirementsStatus: 'جميع المتطلبات جاهزة وموثقة',
+                medicalCheckStatus: 'غير مطلوب',
+                timeSavings: 20,
+                feeAmount: 300,
+                baseFee: 300,
+                lateFee: 0,
+                isLate: false,
+                isFree: false
+            }
+        };
+        
+        // Mock Dependents Data
+        const Dependents = [
+            { name: 'حسام', relationship: 'ولدك', serviceType: 'اصدار رخصة', daysRemaining: 180 },
+            { name: 'سارة', relationship: 'ابنتك', serviceType: 'تجديد هوية', daysRemaining: 27 },
+            { name: 'محمد', relationship: 'ابنك', serviceType: 'تجديد هوية', daysRemaining: 5 }
+        ];
+        
+        // ============================================
+        // NAVIGATION FUNCTIONS
+        // ============================================
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId + '-view').classList.add('active');
+            AppState.currentScreen = screenId;
+        }
+        
+        function login() {
+            showScreen('loading');
+            setTimeout(() => {
+                showScreen('home');
+                updatePaymentProgress();
+            }, 1500);
+        }
+        
+        function navigateToHome() {
+            showScreen('home');
+            updatePaymentProgress();
+        }
+        
+        function navigateToReview(serviceType) {
+            AppState.selectedServiceType = serviceType;
+            const service = ServiceDetails[serviceType];
+            
+            // Update total fee amount
+            AppState.totalFeeAmount = service.feeAmount;
+            
+            // Calculate remaining amount
+            const remaining = Math.max(AppState.totalFeeAmount - AppState.paidAmount, 0);
+            AppState.selectedPaymentAmount = remaining > 0 ? remaining : AppState.totalFeeAmount;
+            
+            // Update UI
+            updateReviewView(service);
+            showScreen('review');
+        }
+        
+        function navigateToDependents() {
+            showScreen('dependents');
+        }
+        
+        function navigateToConfirmation() {
+            const service = ServiceDetails[AppState.selectedServiceType];
+            document.getElementById('time-saved').textContent = service.timeSavings;
+            showScreen('confirmation');
+        }
+        
+        function resetDemo() {
+            AppState.paidAmount = 0;
+            AppState.selectedPaymentAmount = 2700;
+            AppState.totalFeeAmount = 2700;
+            AppState.selectedServiceType = 'drivingLicenseRenewal';
+            AppState.chatMessages = [];
+            showScreen('login');
+        }
+        
+        // ============================================
+        // REVIEW VIEW FUNCTIONS
+        // ============================================
+        function updateReviewView(service) {
+            // Update titles
+            document.getElementById('review-title').textContent = service.serviceTitle;
+            document.getElementById('license-service-title').textContent = service.serviceTitle;
+            
+            // Update beneficiary status
+            document.getElementById('beneficiary-status').textContent = service.beneficiaryStatus;
+            
+            // Update fee breakdown
+            document.getElementById('base-fee-label').textContent = service.serviceTitle;
+            document.getElementById('base-fee-value').textContent = service.isFree ? 'مجاني' : formatCurrency(service.baseFee);
+            document.getElementById('base-fee-value').classList.toggle('free', service.isFree);
+            
+            // Late fee row
+            const lateFeeRow = document.getElementById('late-fee-row');
+            if (service.isLate && service.lateFee > 0) {
+                lateFeeRow.style.display = 'flex';
+                document.getElementById('late-fee-value').textContent = formatCurrency(service.lateFee);
+            } else {
+                lateFeeRow.style.display = 'none';
+            }
+            
+            // Total fee
+            const totalFeeEl = document.getElementById('total-fee');
+            totalFeeEl.textContent = service.isFree ? 'مجاني' : formatCurrency(service.feeAmount);
+            totalFeeEl.classList.toggle('free', service.isFree);
+            
+            // Fees section
+            document.getElementById('fees-display').textContent = service.fees;
+            document.getElementById('payment-method').textContent = service.paymentMethod;
+            
+            // Requirements and medical status
+            document.getElementById('requirements-status').textContent = service.requirementsStatus;
+            document.getElementById('medical-status').textContent = service.medicalCheckStatus;
+            
+            // Update verification dates
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ar-SA');
+            const refStr = formatDateRef(now);
+            document.getElementById('requirements-date').textContent = dateStr;
+            document.getElementById('requirements-ref').textContent = refStr;
+            document.getElementById('medical-date').textContent = dateStr;
+            document.getElementById('medical-ref').textContent = refStr;
+            
+            // Split payment section
+            const splitSection = document.getElementById('split-payment-section');
+            if (service.isFree || service.feeAmount === 0) {
+                splitSection.classList.remove('visible');
+            } else {
+                splitSection.classList.add('visible');
+                const remaining = Math.max(service.feeAmount - AppState.paidAmount, 0);
+                document.getElementById('payment-slider').max = remaining;
+                document.getElementById('payment-slider').value = AppState.selectedPaymentAmount;
+                document.getElementById('slider-remaining').textContent = formatNumber(remaining);
+                updatePaymentSlider(AppState.selectedPaymentAmount);
+            }
+            
+            // Approve button
+            updateApproveButton(service);
+        }
+        
+        function updateApproveButton(service) {
+            const btn = document.getElementById('approve-btn');
+            if (service.isFree || service.feeAmount === 0) {
+                btn.textContent = 'تأكيد التجديد مجاناً';
+            } else {
+                btn.innerHTML = `دفع <span id="approve-amount">${formatNumber(AppState.selectedPaymentAmount)}</span> ريال الآن`;
+            }
+        }
+        
+        function updatePaymentSlider(value) {
+            const amount = parseInt(value);
+            AppState.selectedPaymentAmount = amount;
+            
+            const service = ServiceDetails[AppState.selectedServiceType];
+            const percentage = service.feeAmount > 0 ? Math.round((amount / service.feeAmount) * 100) : 0;
+            
+            document.getElementById('selected-amount').textContent = formatNumber(amount);
+            document.getElementById('selected-percentage').textContent = percentage + '٪';
+            document.getElementById('approve-amount').textContent = formatNumber(amount);
+        }
+        
+        function approveService() {
+            const service = ServiceDetails[AppState.selectedServiceType];
+            const btn = document.getElementById('approve-btn');
+            
+            // Show loading state
+            btn.innerHTML = '<span class="spinner" style="width:20px;height:20px;border-width:2px;display:inline-block;vertical-align:middle;margin-left:8px;"></span> جار المعالجة...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                if (service.isFree || service.feeAmount === 0) {
+                    // Free service - show booked state then navigate (matches ReviewView.swift line 316)
+                    btn.innerHTML = 'تم الحجز ✓';
+                    btn.classList.add('btn-booked');
+                    setTimeout(() => {
+                        navigateToConfirmation();
+                        btn.classList.remove('btn-booked');
+                        btn.disabled = false;
+                    }, 1000);
+                } else {
+                    // Paid service
+                    const payableAmount = Math.min(AppState.selectedPaymentAmount, AppState.totalFeeAmount - AppState.paidAmount);
+                    AppState.paidAmount += payableAmount;
+                    
+                    const remaining = AppState.totalFeeAmount - AppState.paidAmount;
+                    
+                    if (remaining <= 0) {
+                        navigateToConfirmation();
+                    } else {
+                        navigateToHome();
+                    }
+                    
+                    btn.disabled = false;
+                    updateApproveButton(service);
+                }
+            }, 500);
+        }
+
+        // ============================================
+        // PAYMENT PROGRESS FUNCTIONS
+        // ============================================
+        function updatePaymentProgress() {
+            const progressCard = document.getElementById('payment-progress-card');
+            
+            if (AppState.paidAmount > 0) {
+                progressCard.classList.add('visible');
+                
+                const paidPercentage = Math.round((AppState.paidAmount / AppState.totalFeeAmount) * 100);
+                const remainingPercentage = 100 - paidPercentage;
+                const remainingAmount = AppState.totalFeeAmount - AppState.paidAmount;
+                
+                document.getElementById('progress-bar').style.width = paidPercentage + '%';
+                document.getElementById('paid-percentage').textContent = paidPercentage + '٪';
+                document.getElementById('paid-amount').textContent = formatNumber(AppState.paidAmount);
+                document.getElementById('remaining-percentage').textContent = remainingPercentage + '٪';
+                document.getElementById('remaining-amount').textContent = formatNumber(remainingAmount);
+            } else {
+                progressCard.classList.remove('visible');
+            }
+        }
+        
+        // ============================================
+        // CHAT FUNCTIONS
+        // ============================================
+        function openChat() {
+            document.getElementById('chat-overlay').classList.add('active');
+            document.getElementById('chat-view').classList.add('active');
+            
+            // Reset chat state if no messages
+            if (AppState.chatMessages.length === 0) {
+                document.getElementById('chat-greeting').style.display = 'block';
+                document.getElementById('chat-suggestions').style.display = 'flex';
+                document.getElementById('chat-messages').classList.remove('active');
+            }
+        }
+        
+        function closeChat() {
+            document.getElementById('chat-overlay').classList.remove('active');
+            document.getElementById('chat-view').classList.remove('active');
+        }
+        
+        function toggleSendButton() {
+            const input = document.getElementById('chat-input');
+            const sendBtn = document.getElementById('send-btn');
+            const micBtn = document.querySelector('.mic-btn');
+            const cameraBtn = document.querySelector('.camera-btn');
+            
+            if (input.value.trim()) {
+                sendBtn.classList.add('active');
+                micBtn.style.display = 'none';
+                cameraBtn.style.display = 'none';
+            } else {
+                sendBtn.classList.remove('active');
+                micBtn.style.display = 'block';
+                cameraBtn.style.display = 'block';
+            }
+        }
+        
+        function handleChatKeypress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+        
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            
+            if (!text || AppState.isProcessing) return;
+            
+            // Hide greeting and suggestions
+            document.getElementById('chat-greeting').style.display = 'none';
+            document.getElementById('chat-suggestions').style.display = 'none';
+            document.getElementById('chat-messages').classList.add('active');
+            
+            // Add user message
+            addChatMessage(text, true);
+            input.value = '';
+            toggleSendButton();
+            
+            // Generate response
+            generateChatResponse(text, null);
+        }
+        
+        function handleSuggestionTap(type) {
+            // Hide greeting and suggestions
+            document.getElementById('chat-greeting').style.display = 'none';
+            document.getElementById('chat-suggestions').style.display = 'none';
+            document.getElementById('chat-messages').classList.add('active');
+            
+            const suggestionText = 'عندك إشعار من التنبيه الاستباقي: تنبيه استباقي';
+            addChatMessage(suggestionText, true);
+            
+            // Generate response with alert context
+            generateChatResponse(suggestionText, {
+                serviceType: 'drivingLicenseRenewal',
+                title: 'تنبيه استباقي'
+            });
+        }
+        
+        function addChatMessage(content, isUser, deepLink = null) {
+            const messagesContainer = document.getElementById('chat-messages');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            
+            let html = `<div class="message-content">${content}</div>`;
+            
+            if (deepLink) {
+                html += `
+                    <button class="deep-link-btn" onclick="handleDeepLink('${deepLink.serviceType}')">
+                        <span>➜</span>
+                        <span>${deepLink.title}</span>
+                    </button>
+                `;
+            }
+            
+            messageDiv.innerHTML = html;
+            messagesContainer.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Store message
+            AppState.chatMessages.push({ content, isUser, deepLink });
+        }
+        
+        function generateChatResponse(prompt, alertContext) {
+            AppState.isProcessing = true;
+            
+            // Show typing indicator
+            document.getElementById('typing-indicator').classList.add('active');
+            
+            // Simulate LLM response generation
+            setTimeout(() => {
+                document.getElementById('typing-indicator').classList.remove('active');
+                
+                let response = '';
+                let deepLink = null;
+                
+                const lowercasedPrompt = prompt.toLowerCase();
+                
+                // Check for proactive alert context
+                if (alertContext) {
+                    response = 'مرحباً! لاحظت أن رخصة قيادتك على وشك الانتهاء. يمكنك تجديدها الآن بسهولة. اضغط على الرابط أدناه للمتابعة.';
+                    deepLink = {
+                        serviceType: alertContext.serviceType,
+                        title: 'تجديد رخصة القيادة'
+                    };
+                }
+                // Check for driving license queries
+                else if (lowercasedPrompt.includes('رخصة') || lowercasedPrompt.includes('القيادة') || 
+                         lowercasedPrompt.includes('اجدد') || lowercasedPrompt.includes('تجديد') ||
+                         lowercasedPrompt.includes('license') || lowercasedPrompt.includes('driving')) {
+                    response = 'أهلاً! يمكنك تجديد رخصة القيادة بسهولة من خلال الضغط على الرابط أدناه. الرسوم هي ٤٠ ريال فقط.';
+                    deepLink = {
+                        serviceType: 'drivingLicenseRenewal',
+                        title: 'تجديد رخصة القيادة'
+                    };
+                }
+                // Check for passport queries
+                else if (lowercasedPrompt.includes('جواز') || lowercasedPrompt.includes('السفر') || 
+                         lowercasedPrompt.includes('passport')) {
+                    response = 'يمكنك تجديد جواز السفر من خلال الرابط أدناه.';
+                    deepLink = {
+                        serviceType: 'passportRenewal',
+                        title: 'تجديد جواز السفر'
+                    };
+                }
+                // Check for national ID queries
+                else if (lowercasedPrompt.includes('هوية') || lowercasedPrompt.includes('الوطنية') || 
+                         lowercasedPrompt.includes('national id')) {
+                    response = 'يمكنك تجديد الهوية الوطنية من خلال الرابط أدناه.';
+                    deepLink = {
+                        serviceType: 'nationalIdRenewal',
+                        title: 'تجديد الهوية الوطنية'
+                    };
+                }
+                // Default response
+                else {
+                    response = 'مرحباً بك في أبشر. كيف يمكنني مساعدتك اليوم؟ يمكنني مساعدتك في تجديد رخصة القيادة، جواز السفر، أو الهوية الوطنية.';
+                }
+                
+                addChatMessage(response, false, deepLink);
+                
+                // Add dependent alert after proactive alert response
+                if (alertContext) {
+                    setTimeout(() => {
+                        const dependent = Dependents[0];
+                        const dependentMessage = `${dependent.relationship} ${dependent.name} باقي له ${dependent.daysRemaining} يوم على ${dependent.serviceType}`;
+                        addChatMessage(dependentMessage, false, {
+                            serviceType: 'dependents',
+                            title: dependentMessage
+                        });
+                    }, 500);
+                }
+                
+                AppState.isProcessing = false;
+            }, 1000);
+        }
+        
+        function handleDeepLink(serviceType) {
+            closeChat();
+            
+            if (serviceType === 'dependents') {
+                navigateToDependents();
+            } else {
+                navigateToReview(serviceType);
+            }
+        }
+        
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        function toggleCheckbox(element) {
+            element.classList.toggle('checked');
+        }
+        
+        function formatNumber(num) {
+            return num.toLocaleString('ar-SA');
+        }
+        
+        function formatCurrency(amount) {
+            return formatNumber(amount) + ' ريال';
+        }
+        
+        function formatDateRef(date) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = String(date.getFullYear()).slice(-2);
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${day}${month}${year}-${hours}${minutes}`;
+        }
+        
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize verification dates
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ar-SA');
+            const refStr = formatDateRef(now);
+            
+            document.getElementById('requirements-date').textContent = dateStr;
+            document.getElementById('requirements-ref').textContent = refStr;
+            document.getElementById('medical-date').textContent = dateStr;
+            document.getElementById('medical-ref').textContent = refStr;
+        });
+    </script>
+</body>
+</html>
