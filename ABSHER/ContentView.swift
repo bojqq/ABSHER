@@ -8,17 +8,61 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var viewModel: AppViewModel
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Group {
+            switch viewModel.currentScreen {
+            case .login:
+                LoginView(viewModel: viewModel)
+                    .transition(.asymmetric(
+                        insertion: .opacity,
+                        removal: .opacity.combined(with: .scale(scale: 0.95))
+                    ))
+            case .loading:
+                LoadingView()
+                    .transition(.opacity)
+            case .home:
+                HomeView(viewModel: viewModel)
+                    .transition(.asymmetric(
+                        insertion: .opacity.combined(with: .scale(scale: 0.95)),
+                        removal: .opacity
+                    ))
+            case .review:
+                ReviewView(
+                    viewModel: viewModel,
+                    serviceDetails: viewModel.currentServiceDetails,
+                    userProfile: MockDataService.shared.userProfile
+                )
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing).combined(with: .opacity),
+                    removal: .move(edge: .trailing).combined(with: .opacity)
+                ))
+            case .confirmation:
+                ConfirmationView(
+                    viewModel: viewModel,
+                    timeSavings: MockDataService.shared.serviceDetails.timeSavings
+                )
+                .transition(.asymmetric(
+                    insertion: .scale(scale: 0.8).combined(with: .opacity),
+                    removal: .opacity
+                ))
+            case .dependents:
+                DependentsView(
+                    viewModel: viewModel,
+                    dependents: MockDataService.shared.dependents
+                )
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing).combined(with: .opacity),
+                    removal: .move(edge: .trailing).combined(with: .opacity)
+                ))
+            }
         }
-        .padding()
+        .animation(.easeInOut(duration: 0.35), value: viewModel.currentScreen)
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(AppViewModel())
 }

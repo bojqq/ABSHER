@@ -1,0 +1,109 @@
+# Implementation Plan
+
+- [x] 1. Set up MLX Swift dependencies and core modelss  - [ ] 1.1 Add mlx-swift and mlx-swift-llm packages to the Xcode project
+    - Add Swift Package dependencies for MLX framework
+    - Configure build settings for Apple Silicon optimization
+    - _Requirements: 4.1_
+  - [x] 1.2 Create ChatMessage model with Codable support
+    - Implement ChatMessage struct with id, content, isUser, timestamp, deepLink
+    - Implement DeepLink struct with serviceType, title, alertId
+    - Implement ServiceType enum
+    - Add Equatable conformance for testing
+    - _Requirements: 6.1, 6.2_
+  - [x] 1.3 Write property test for ChatMessage round-trip serialization
+    - **Property 6: Chat message round-trip serialization**
+    - **Validates: Requirements 6.1, 6.2, 6.3**
+  - [x] 1.4 Create SuggestionChip model with formatting logic
+    - Implement SuggestionChip struct with id, alert, displayText
+    - Implement static formatDisplayText method with Arabic prefix
+    - Implement static fromAlert factory method
+    - _Requirements: 1.2_
+  - [x] 1.5 Write property test for suggestion chip formatting
+    - **Property 2: Suggestion chip formatting**
+    - **Validates: Requirements 1.2**
+
+- [x] 2. Implement MLXService for model loading and inference
+  - [x] 2.1 Create MLXService class with model loading
+    - Implement loadModel(modelPath:) async method
+    - Add isModelLoaded and errorMessage published properties
+    - Handle model loading errors gracefully
+    - _Requirements: 4.1, 4.4_
+  - [x] 2.2 Implement token generation with streaming
+    - Implement generate(prompt:) returning AsyncThrowingStream<String, Error>
+    - Stream tokens as they are generated
+    - Handle generation errors
+    - _Requirements: 4.2, 4.3_
+  - [x] 2.3 Write property test for token streaming order
+    - **Property 4: Token streaming order**
+    - **Validates: Requirements 4.3**
+
+- [x] 3. Checkpoint - Ensure core models and MLX service work
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 4. Implement ChatViewModel for chat state management
+  - [x] 4.1 Create ChatViewModel with message and suggestion state
+    - Implement messages, suggestions, isProcessing, inputText properties
+    - Inject MLXService and alerts provider dependencies
+    - _Requirements: 1.1, 5.1_
+  - [x] 4.2 Implement loadSuggestions from proactive alerts
+    - Convert ProactiveAlert items to SuggestionChip items
+    - Handle empty alerts case
+    - _Requirements: 1.1, 1.3_
+  - [x] 4.3 Write property test for suggestion chips matching alerts
+    - **Property 1: Suggestion chips match proactive alerts**
+    - **Validates: Requirements 1.1**
+  - [x] 4.4 Implement sendMessage and handleSuggestionTap
+    - Add user message to chat
+    - Set isProcessing state
+    - Call MLXService for generation
+    - Append bot response with deep link when applicable
+    - _Requirements: 2.1, 5.1, 5.2, 5.3_
+  - [x] 4.5 Write property test for message submission
+    - **Property 5: Message submission triggers processing**
+    - **Validates: Requirements 5.1, 5.3**
+  - [x] 4.6 Implement handleDeepLinkTap for navigation
+    - Extract service type from deep link
+    - Return navigation destination
+    - _Requirements: 3.1, 3.2_
+  - [x] 4.7 Write property test for deep link navigation
+    - **Property 3: Deep link navigation preserves context**
+    - **Validates: Requirements 3.1, 3.2**
+
+- [x] 5. Checkpoint - Ensure ViewModel logic works correctly
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 6. Update AbsherChatView with suggestions and messages UI
+  - [x] 6.1 Add suggestion chips section below greeting
+    - Display SuggestionChip items as tappable buttons
+    - Style with Arabic RTL layout
+    - Handle tap to call viewModel.handleSuggestionTap
+    - _Requirements: 1.1, 1.2, 2.1_
+  - [x] 6.2 Add chat messages list with deep link support
+    - Display ChatMessage items in scrollable list
+    - Differentiate user vs bot messages
+    - Render deep links as tappable buttons
+    - _Requirements: 2.2, 2.3, 5.2_
+  - [x] 6.3 Implement input bar with send functionality
+    - Enable text input field
+    - Add send button
+    - Call viewModel.sendMessage on submit
+    - Show loading indicator when processing
+    - _Requirements: 5.1, 5.3_
+  - [x] 6.4 Implement deep link navigation to payment page
+    - Handle deep link tap to navigate to ReviewView/ConfirmationView
+    - Dismiss chat view on navigation
+    - Pass service context to destination
+    - _Requirements: 3.1, 3.2, 3.3_
+
+- [x] 7. Integrate with existing app navigation
+  - [x] 7.1 Update HomeView to pass proactive alerts to chat
+    - Pass current proactive alerts to ChatViewModel
+    - Ensure alerts are loaded before chat opens
+    - _Requirements: 1.1_
+  - [x] 7.2 Connect chat deep links to existing payment flow
+    - Navigate to existing ReviewView for driving license renewal
+    - Ensure payment flow works from chat navigation
+    - _Requirements: 3.1, 3.2_
+
+- [x] 8. Final Checkpoint
+  - Ensure all tests pass, ask the user if questions arise.

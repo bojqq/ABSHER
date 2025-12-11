@@ -1,0 +1,4 @@
+# file: /Users/ilyasmalghamdi/Documents/ABSHER/server/api/models.py
+# hypothesis_version: 6.148.7
+
+['Assistant response', 'Message content', 'Session identifier', 'User identifier', 'assistant', 'content', 'role', 'system', 'user', 'user_id']
