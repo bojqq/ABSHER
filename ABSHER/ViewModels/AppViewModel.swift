@@ -4,7 +4,7 @@ import Combine
 
 @MainActor
 class AppViewModel: ObservableObject {
-    @Published var currentScreen: Screen = .login
+    @Published var currentScreen: Screen = .splash
     @Published var isLoading: Bool = false
     @Published var totalFeeAmount: Double
     @Published private(set) var paidAmount: Double = 0
@@ -15,8 +15,7 @@ class AppViewModel: ObservableObject {
     @Published var nationalIdDocument: DigitalDocument?
     
     enum Screen {
-        case login
-        case loading
+        case splash
         case home
         case review
         case confirmation
@@ -65,19 +64,12 @@ class AppViewModel: ObservableObject {
     
     // MARK: - Navigation Methods
     
-    func login() {
+    func navigateToHome() {
         withAnimation(.easeInOut(duration: 0.3)) {
-            isLoading = true
-            currentScreen = .loading
+            currentScreen = .home
         }
         
         Task {
-            try? await Task.sleep(nanoseconds: 1_500_000_000) // 1.5 seconds
-            withAnimation(.easeInOut(duration: 0.3)) {
-                isLoading = false
-                currentScreen = .home
-            }
-            
             await fetchVerification(force: false)
         }
     }
@@ -202,7 +194,7 @@ class AppViewModel: ObservableObject {
         withAnimation(.easeInOut(duration: 0.3)) {
             paidAmount = 0
             selectedPaymentAmount = totalFeeAmount
-            currentScreen = .login
+            currentScreen = .splash
             verificationSnapshot = nil
             verificationState = .idle
         }

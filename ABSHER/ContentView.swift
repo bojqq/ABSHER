@@ -13,14 +13,8 @@ struct ContentView: View {
     var body: some View {
         Group {
             switch viewModel.currentScreen {
-            case .login:
-                LoginView(viewModel: viewModel)
-                    .transition(.asymmetric(
-                        insertion: .opacity,
-                        removal: .opacity.combined(with: .scale(scale: 0.95))
-                    ))
-            case .loading:
-                LoadingView()
+            case .splash:
+                SplashView(viewModel: viewModel)
                     .transition(.opacity)
             case .home:
                 HomeView(viewModel: viewModel)
